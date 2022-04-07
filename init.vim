@@ -188,5 +188,9 @@ nmap <F8> :TagbarToggle<CR>
 let mapleader="\\"
 
 nmap <leader>s :OmniSharpSignatureHelp<CR>
+nmap <leader>d :OmniSharpPreviewDefinition<CR>
+nmap <leader>i :OmniSharpPreviewImplementation<CR>
+nmap <leader>c :OmniSharpDocumentation<CR>
+
 
 :colorscheme jellybeans
