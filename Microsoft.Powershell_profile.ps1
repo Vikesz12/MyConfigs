@@ -17,3 +17,8 @@ function Set-GitConfig-Personal {
     git config user.name "Bacskay Viktor"
     git config user.email "bacskay.viktor@gmail.com"
 }
+
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
