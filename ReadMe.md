@@ -8,7 +8,8 @@ Copy profile to terminal profile. `code $PROFILE`
 
 Create `vikesz-posh.omp.json` in home folder
 
-Download `Caskaydia Cove Nerd Font` from [here] (https://www.nerdfonts.com/font-downloads)
+Download `Caskaydia Cove Nerd Font` from [here](https://www.nerdfonts.com/font-downloads)
+
 Set the font in terminal settings Powershell -> Appearance -> Font Face
 
 Set exectuion policy: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
