@@ -1,6 +1,5 @@
-Import-Module oh-my-posh
 Import-Module PSReadLine
-Set-PoshPrompt -Theme "${HOME}\.oh-my-posh.omp.json"
+oh-my-posh init pwsh --config "$HOME\vikesz-posh.omp.json" | Invoke-Expression
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 # PowerShell parameter completion shim for the dotnet CLI
 Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
