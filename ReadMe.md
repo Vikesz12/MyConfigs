@@ -13,3 +13,6 @@ Download `Caskaydia Cove Nerd Font` from [here](https://www.nerdfonts.com/font-d
 Set the font in terminal settings Powershell -> Appearance -> Font Face
 
 Set exectuion policy: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+Install posh git with the following command :
+`sudo choco install poshgit -y`
