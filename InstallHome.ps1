@@ -42,11 +42,30 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";
 Write-Host "Installing oh my posh..."
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
-$Action = PromptYesNo('Do you want to intsall programs?')
+Write-Host "Installing essential programs..."
+choco install .\Essential-choco-install.config -y
+
+Write-Host "Installing gpu drivers..."
+if(CheckIfGpuNameContains("nvidia")){
+    Write-Host "Detected nvidia gpu installing driver..."
+    choco install nvidia-display-driver -y
+}
+elseif(CheckIfGpuNameContains("amd")){
+    Write-Warning "Amd graphics card found please install gpu driver manually!"
+}
+elseif(CheckIfGpuNameContains("intel")){
+    Write-Host "Detected intel gpu installing driver..."
+    choco install intel-graphics-driver -y
+}
+else{
+    Write-Warning "Could not recognize gpu please install driver manually"
+}
+
+$Action = PromptYesNo('Do you want to intsall additional programs?')
 
 if ($Action -eq $true) {
-    Write-Host "Installing programs..."
-    choco install .\Basic-choco-install.config -y
+    Write-Host "Installing additional programs..."
+    choco install .\Additional-choco-install.config -y
 }
 
 Write-Host "Setting execution policy..."
@@ -78,6 +97,10 @@ refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 gsudo config PowerShellLoadProfile true
+
+function CheckIfGpuNameContains($Manufacturer) {
+    return (Get-WmiObject win32_VideoController).Name -like  "*$Manufacturer*"
+}
 
 function PromptYesNo($Message) {
     $Action = $Host.UI.PromptForChoice('Select', $Message, ('&Yes', '&No'), 1)
