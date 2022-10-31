@@ -21,6 +21,20 @@ function Copy-File-Safe {
     Copy-Item $Source $Destination -Force -Verbose
 }
 
+function CheckIfGpuNameContains($Manufacturer) {
+    return (Get-WmiObject win32_VideoController).Name -like  "*$Manufacturer*"
+}
+
+function PromptYesNo($Message) {
+    $Action = $Host.UI.PromptForChoice('Select', $Message, ('&Yes', '&No'), 1)
+
+    if ($Action -eq 0) {
+        return $true
+    }
+    else {
+        return $false
+    }
+}
 
 $Action = PromptYesNo('Do you want to active windows?')
 
@@ -97,18 +111,3 @@ refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 gsudo config PowerShellLoadProfile true
-
-function CheckIfGpuNameContains($Manufacturer) {
-    return (Get-WmiObject win32_VideoController).Name -like  "*$Manufacturer*"
-}
-
-function PromptYesNo($Message) {
-    $Action = $Host.UI.PromptForChoice('Select', $Message, ('&Yes', '&No'), 1)
-
-    if ($Action -eq 0) {
-        return $true
-    }
-    else {
-        return $false
-    }
-}
