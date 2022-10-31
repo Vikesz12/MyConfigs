@@ -36,7 +36,6 @@ function PromptYesNo($Message) {
     }
 }
 
-
 Write-Host "Setting execution policy..."
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
@@ -51,16 +50,18 @@ Write-Host "Installing chocolatey..."
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+Set-PSRepository -Name 'PSGallery' -SourceLocation "https://www.powershellgallery.com/api/v2" -InstallationPolicy Trusted
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
 Remove-Module "PSReadLine" -Force
 Install-Module "PSReadLine" -Force
 
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
-if (!(Get-WMIObject win32_operatingsystem).Caption.Contains("Windows 11")) {
-    Write-Host "Installing windows terminal..."
-    choco install microsoft-windows-terminal -y
-}
+Write-Host "Installing windows terminal..."
+winget install Microsoft.WindowsTermianl -l US --accept-source-agreements
 Write-Host "Installing oh my posh..."
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
@@ -91,9 +92,6 @@ if ($Action -eq $true) {
 }
 
 Write-Host "Installing PowerShell modules"
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Set-PSRepository -Name 'PSGallery' -SourceLocation "https://www.powershellgallery.com/api/v2" -InstallationPolicy Trusted
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Add-Module "PSReadLine"
 Add-Module "Posh-Git"
 Add-Module "7Zip4PowerShell"
