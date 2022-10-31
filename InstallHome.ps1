@@ -36,6 +36,10 @@ function PromptYesNo($Message) {
     }
 }
 
+
+Write-Host "Setting execution policy..."
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 $Action = PromptYesNo('Do you want to active windows?')
 
 if ($Action -eq $true) {
@@ -86,9 +90,6 @@ if ($Action -eq $true) {
     choco install .\Additional-choco-install.config -y
 }
 
-Write-Host "Setting execution policy..."
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
 Write-Host "Installing PowerShell modules"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Set-PSRepository -Name 'PSGallery' -SourceLocation "https://www.powershellgallery.com/api/v2" -InstallationPolicy Trusted
@@ -96,7 +97,6 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Add-Module "PSReadLine"
 Add-Module "Posh-Git"
 Add-Module "7Zip4PowerShell"
-
 
 Write-Host "Installing terminal profiles..."
 Copy-File-Safe .\Profile.ps1 "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
