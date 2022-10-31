@@ -22,7 +22,7 @@ function Copy-File-Safe {
 }
 
 function CheckIfGpuNameContains($Manufacturer) {
-    return (Get-WmiObject win32_VideoController).Name -like  "*$Manufacturer*"
+    return (Get-WmiObject win32_VideoController).Name -like "*$Manufacturer*"
 }
 
 function PromptYesNo($Message) {
@@ -53,6 +53,10 @@ Install-Module "PSReadLine" -Force
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
+if (!(Get-WMIObject win32_operatingsystem).Caption.Contains("Windows 11")) {
+    Write-Host "Installing windows terminal..."
+    choco install microsoft-windows-terminal -y
+}
 Write-Host "Installing oh my posh..."
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
@@ -60,18 +64,18 @@ Write-Host "Installing essential programs..."
 choco install .\Essential-choco-install.config -y
 
 Write-Host "Installing gpu drivers..."
-if(CheckIfGpuNameContains("nvidia")){
+if (CheckIfGpuNameContains("nvidia")) {
     Write-Host "Detected nvidia gpu installing driver..."
     choco install nvidia-display-driver -y
 }
-elseif(CheckIfGpuNameContains("amd")){
+elseif (CheckIfGpuNameContains("amd")) {
     Write-Warning "Amd graphics card found please install gpu driver manually!"
 }
-elseif(CheckIfGpuNameContains("intel")){
+elseif (CheckIfGpuNameContains("intel")) {
     Write-Host "Detected intel gpu installing driver..."
     choco install intel-graphics-driver -y
 }
-else{
+else {
     Write-Warning "Could not recognize gpu please install driver manually"
 }
 
