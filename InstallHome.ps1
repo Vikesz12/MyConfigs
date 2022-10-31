@@ -87,13 +87,15 @@ else {
 }
 
 Write-Host "Installing essential programs..."
-choco install Get-FileIn-ScriptDirectory("Essential-choco-install.config") -y
+$EssentialsPath = Get-FileIn-ScriptDirectory("Essential-choco-install.config")
+choco install $EssentialsPath -y
 
 $Action = PromptYesNo('Do you want to intsall additional programs?')
 
 if ($Action -eq $true) {
     Write-Host "Installing additional programs..."
-    choco install Get-FileIn-ScriptDirectory("Additional-choco-install.config") -y
+    $AdditionalPaths = Get-FileIn-ScriptDirectory("Additional-choco-install.config")
+    choco install $AdditionalPaths -y
 }
 
 Write-Host "Installing PowerShell modules"
@@ -102,17 +104,20 @@ Add-Module "Posh-Git"
 Add-Module "7Zip4PowerShell"
 
 Write-Host "Installing terminal profiles..."
-Copy-File-Safe Get-FileIn-ScriptDirectory("Profile.ps1") "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
-Copy-File-Safe Get-FileIn-ScriptDirectory("Profile.ps1") "${HOME}\Documents\PowerShell\Microsoft.VSCode_profile.ps1"
-Copy-File-Safe Get-FileIn-ScriptDirectory("Profile.ps1") "${HOME}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+$ProfilePath = Get-FileIn-ScriptDirectory("Profile.ps1")
+Copy-File-Safe $ProfilePath "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+Copy-File-Safe $ProfilePath "${HOME}\Documents\PowerShell\Microsoft.VSCode_profile.ps1"
+Copy-File-Safe $ProfilePath "${HOME}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 Write-Host "Installing terminal theme..."
-Copy-File-Safe Get-FileIn-ScriptDirectory("vikesz-posh.omp.json") "${HOME}\.vikesz-posh.omp.json"
+$PoshPath = Get-FileIn-ScriptDirectory("vikesz-posh.omp.json")
+Copy-File-Safe $PoshPath "${HOME}\.vikesz-posh.omp.json"
 
 Write-Host "Installing terminal settings..."
 $WindowsTerminalFolder = Get-ChildItem "${env:LocalAppData}\Packages\" -Recurse | Where-Object { $_.PSIsContainer -and $_.Name.StartsWith("Microsoft.WindowsTerminal") }
 $TerminalSettingsPath = "${WindowsTerminalFolder}\LocalState\settings.json"
-Copy-File-Safe Get-FileIn-ScriptDirectory("terminal-settings.json") $TerminalSettingsPath
+$TerminalSourcePath = Get-FileIn-ScriptDirectory("terminal-settings.json")
+Copy-File-Safe $TerminalSourcePath $TerminalSettingsPath
 
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
