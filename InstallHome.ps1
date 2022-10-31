@@ -104,18 +104,19 @@ Add-Module "Posh-Git"
 Add-Module "7Zip4PowerShell"
 
 Write-Host "Installing terminal profiles..."
-$ProfilePath = Get-FileIn-ScriptDirectory("Profile.ps1")
+$ProfilePath = Get-FileIn-ScriptDirectory("Microsoft.Powershell_profile.ps1")
+Unblock-File $ProfilePath
 Copy-File-Safe $ProfilePath "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
 Copy-File-Safe $ProfilePath "${HOME}\Documents\PowerShell\Microsoft.VSCode_profile.ps1"
 Copy-File-Safe $ProfilePath "${HOME}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 Write-Host "Installing terminal theme..."
 $PoshPath = Get-FileIn-ScriptDirectory("vikesz-posh.omp.json")
-Copy-File-Safe $PoshPath "${HOME}\.vikesz-posh.omp.json"
+Copy-File-Safe $PoshPath "${HOME}\vikesz-posh.omp.json"
 
 Write-Host "Installing terminal settings..."
 $WindowsTerminalFolder = Get-ChildItem "${env:LocalAppData}\Packages\" -Recurse | Where-Object { $_.PSIsContainer -and $_.Name.StartsWith("Microsoft.WindowsTerminal") }
-$TerminalSettingsPath = "${WindowsTerminalFolder}\LocalState\settings.json"
+$TerminalSettingsPath = "${env:LocalAppData}\Packages\${WindowsTerminalFolder}\LocalState\settings.json"
 $TerminalSourcePath = Get-FileIn-ScriptDirectory("terminal-settings.json")
 Copy-File-Safe $TerminalSourcePath $TerminalSettingsPath
 
