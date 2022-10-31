@@ -36,6 +36,10 @@ function PromptYesNo($Message) {
     }
 }
 
+function Get-FileIn-ScriptDirectory($FileName) { 
+    return Join-Path $PSScriptRoot  $FileName
+}
+
 Write-Host "Setting execution policy..."
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
@@ -45,6 +49,11 @@ if ($Action -eq $true) {
     Write-Host "Activating windows..."
     Invoke-RestMethod https://massgrave.dev/get | Invoke-Expression
 }
+
+Write-Host "Installing windows terminal..."
+winget install Microsoft.WindowsTermianl -l US --accept-source-agreements
+Write-Host "Installing oh my posh..."
+winget install JanDeDobbeleer.OhMyPosh -s winget
 
 Write-Host "Installing chocolatey..."
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
@@ -60,13 +69,6 @@ Install-Module "PSReadLine" -Force
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
-Write-Host "Installing windows terminal..."
-winget install Microsoft.WindowsTermianl -l US --accept-source-agreements
-Write-Host "Installing oh my posh..."
-winget install JanDeDobbeleer.OhMyPosh -s winget
-
-Write-Host "Installing essential programs..."
-choco install .\Essential-choco-install.config -y
 
 Write-Host "Installing gpu drivers..."
 if (CheckIfGpuNameContains("nvidia")) {
@@ -84,11 +86,14 @@ else {
     Write-Warning "Could not recognize gpu please install driver manually"
 }
 
+Write-Host "Installing essential programs..."
+choco install Get-FileIn-ScriptDirectory(Essential-choco-install.config) -y
+
 $Action = PromptYesNo('Do you want to intsall additional programs?')
 
 if ($Action -eq $true) {
     Write-Host "Installing additional programs..."
-    choco install .\Additional-choco-install.config -y
+    choco install Get-FileIn-ScriptDirectory(Additional-choco-install.config) -y
 }
 
 Write-Host "Installing PowerShell modules"
@@ -97,17 +102,17 @@ Add-Module "Posh-Git"
 Add-Module "7Zip4PowerShell"
 
 Write-Host "Installing terminal profiles..."
-Copy-File-Safe .\Profile.ps1 "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
-Copy-File-Safe .\Profile.ps1 "${HOME}\Documents\PowerShell\Microsoft.VSCode_profile.ps1"
-Copy-File-Safe .\Profile.ps1 "${HOME}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+Copy-File-Safe Get-FileIn-ScriptDirectory(Profile.ps1) "${HOME}\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+Copy-File-Safe Get-FileIn-ScriptDirectory(Profile.ps1) "${HOME}\Documents\PowerShell\Microsoft.VSCode_profile.ps1"
+Copy-File-Safe Get-FileIn-ScriptDirectory(Profile.ps1) "${HOME}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 Write-Host "Installing terminal theme..."
-Copy-File-Safe .\.vikesz-posh.omp.json "${HOME}\.vikesz-posh.omp.json"
+Copy-File-Safe Get-FileIn-ScriptDirectory(.vikesz-posh.omp.json) "${HOME}\.vikesz-posh.omp.json"
 
 Write-Host "Installing terminal settings..."
 $WindowsTerminalFolder = Get-ChildItem "${env:LocalAppData}\Packages\" -Recurse | Where-Object { $_.PSIsContainer -and $_.Name.StartsWith("Microsoft.WindowsTerminal") }
 $TerminalSettingsPath = "${WindowsTerminalFolder}\LocalState\settings.json"
-Copy-File-Safe .\terminal-settings.json $TerminalSettingsPath
+Copy-File-Safe Get-FileIn-ScriptDirectory(terminal-settings.json) $TerminalSettingsPath
 
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
