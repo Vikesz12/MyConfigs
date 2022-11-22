@@ -11,6 +11,8 @@ function Set-GitConfig-Personal {
     git config user.email "bacskay.viktor@gmail.com"
 }
 
+function Remove-Merged-Branches { git branch --merged | Select-String -NotMatch "(^\*|master|develop)" | ForEach-Object { git branch -d $_.ToString().Trim() } }
+
 # Autocompletes
 
 # chocolatey
