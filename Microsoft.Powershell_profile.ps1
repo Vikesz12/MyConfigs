@@ -1,6 +1,9 @@
 Import-Module PSReadLine
 oh-my-posh init pwsh --config "$HOME\vikesz-posh.omp.json" | Invoke-Expression
+
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 function Set-GitConfig-Work {
     git config user.name "Bacskay Viktor"
