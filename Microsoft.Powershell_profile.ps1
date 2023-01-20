@@ -1,4 +1,6 @@
 Import-Module PSReadLine
+Import-Module posh-git
+
 oh-my-posh init pwsh --config "$HOME\vikesz-posh.omp.json" | Invoke-Expression
 
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete

@@ -65,6 +65,7 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 Remove-Module "PSReadLine" -Force
 Install-Module "PSReadLine" -Force
+Install-Module "posh-git" -Force
 
 refreshenv
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
