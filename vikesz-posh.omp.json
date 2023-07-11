@@ -33,7 +33,8 @@
             "fetch_status": false,
             "fetch_upstream_icon": true
           },
-          "style": "pype": "git"
+          "type": "git",
+          "style": "powerline"
         },
         {
           "background": "#3890e9",
@@ -50,7 +51,7 @@
             "time_format": "15:04"
           },
           "style": "diamond",
-          "template": " \u2665 {{ .CurrentDate | date .Format }} ",
+          "template": " \ue383 {{ .CurrentDate | date .Format }} ",
           "trailing_diamond": "\ue0b0",
           "type": "time"
         }      
