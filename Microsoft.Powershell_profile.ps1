@@ -9,14 +9,24 @@ Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 function Set-GitConfig-Work {
     git config user.name "Bacskay Viktor"
-    git config user.email "bacskay.viktor@autsoft.hu"
+    git config user.email "viktor.bacskay@asuratechnologies.com"
 }
+
 function Set-GitConfig-Personal {
     git config user.name "Bacskay Viktor"
     git config user.email "bacskay.viktor@gmail.com"
 }
 
-function Remove-Merged-Branches { git branch --merged | Select-String -NotMatch "(^\*|master|develop)" | ForEach-Object { git branch -d $_.ToString().Trim() } }
+function Remove-Merged-Branches { git branch --merged | Select-String -NotMatch "(^\*|master|dev)" | ForEach-Object { git branch -d $_.ToString().Trim() } }
+
+function Remove-Branches-No-Remote {
+    git fetch -p
+    git branch -vv | Select-String ': gone]' | ForEach-Object { git branch -D ($_ -split "\s+")[1].ToString().Trim() }
+}
+
+function Open-Vs {
+    Get-ChildItem *.sln -Recurse | Invoke-Item
+}
 
 # Autocompletes
 
