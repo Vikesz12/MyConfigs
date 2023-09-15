@@ -1,0 +1,55 @@
+{
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.iconTheme": "material-icon-theme",
+    "vim.vimrc.enable": true,
+    "vim.smartRelativeLine": true,
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": false,
+    "vim.leader": "ű",
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-p>": false,
+        "<C-f>": false
+    },
+    "vim.statusBarColorControl": true,
+    "vim.statusBarColors.normal": [
+        "#8FBCBB",
+        "#000"
+    ],
+    "vim.statusBarColors.insert": [
+        "#BF616A",
+        "#000"
+    ],
+    "vim.statusBarColors.visual": [
+        "#B48EAD",
+        "#000"
+    ],
+    "vim.statusBarColors.visualline": [
+        "#B48EAD",
+        "#000"
+    ],
+    "vim.statusBarColors.visualblock": [
+        "#A3BE8C",
+        "#000"
+    ],
+    "editor.lineNumbers": "off",
+    "editor.minimap.enabled": false,
+    "git.openRepositoryInParentFolders": "always",
+    "git-graph.dialog.rebase.ignoreDate": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "git-graph.repository.fetchAndPrune": true,
+    "[json]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "gitPrefix.replacement": "#$1",
+    "gitPrefix.pattern": ".*\\/([0-9]+).*",
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#B48EAD",
+        "statusBar.noFolderBackground": "#B48EAD",
+        "statusBar.debuggingBackground": "#B48EAD",
+        "statusBar.foreground": "#000",
+        "statusBar.debuggingForeground": "#000"
+    }
+}
